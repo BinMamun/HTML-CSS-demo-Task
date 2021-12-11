@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Evidence OF 1264603</title>
+        <link rel="stylesheet" href="./style/style.css" />
+    </head>
+
+    <body>
+        <div class="main">
+            <nav class="navbar">
+                <label><a class="brand" href="./index.html">Evidence</a></label>
+                <ul class="ul">
+                    <li class="list">
+                        <a class="li-font" href="./index.html">Home</a>
+                    </li>
+                     </li>
+                    <li class="list">
+                        <a class="li-font" href="./task_01.html">Task_01</a>
+                    </li>
+                    <li class="list">
+                        <a class="li-font active" href="./task_02.html">Task_02</a>
+                    </li>
+                    <li class="list">
+                       <a class="li-font" href="./about.html">About</a>
+                    </li>
+                </ul>
+            </nav>
+
+          
+         
+            <div class="container" id="d1">
+                    <h2>Literal Pattern object</h2>
+            </div>
+
+            <div class="container" id="d2">
+                    <h2>Constructor Pattern object</h2>
+            </div>
+
+            <div class="container" id="d3">
+                    <h2>Factory Pattern object</h2>
+            </div>
+
+            <div class="container" id="d4">
+                <h2>Inheritance</h2>
+            </div>
+         
+        </div>
+
+            
+        <div>
+            <footer class="footer">&copy; -2021 Copyright info</footer>
+        </div>
+
+
+         <script>
+
+             /*Literal Pattern*/           
+
+            var st1 = {id: 1, name: "ST01", dept: "CMT", session: "12-13"};
+
+             document.getElementById("d1").innerHTML +=   
+            `Emp. Id: ${st1.id}<br>
+             Emp. Name: ${st1.name}<br />
+             Department: ${st1.dept}<br />
+             Session: ${st1.session}
+             `;
+
+             /*Constructor Pattern*/
+
+            function Student(id, name, dept, session) {
+                this.id = id;
+                this.name = name;
+                this.dept = dept;
+                this.session = session;
+            }
+            Student.prototype.info = function () {
+                return `Student. Id: ${this.id}<br />
+                          Student. Name: ${this.name}<br />
+                          Department: ${this.dept}<br />
+                          Session: ${this.session}`;
+            };
+
+            var st2 = new Student(2,"ST02","ENT","14-15");
+
+            document.getElementById("d2").innerHTML += st2.info();
+
+            /*Factory Pattern*/
+
+                function createStudent(id, name, dept, session) {
+                var obj = {};
+                obj.id = id;
+                obj.name = name;
+                obj.dept = dept;
+                obj.session = session;
+
+                obj.info = function () {
+                    return `Student. Id: ${this.id}<br>
+                            Student Name: ${this.name}<br />
+                            Department: ${this.dept}<br />
+                            Sess: ${this.session}`;
+                };
+                return obj;
+            }
+
+          
+            var st3 = createStudent(3, "ST03", "Elctrical", "14-16");
+
+            document.getElementById("d3").innerHTML += st3.info();
+
+
+            /*Inheritance*/
+
+            function Person(name) {
+                this.name = name;
+            }
+
+            Person.prototype.info = function () {
+                return `
+                Name: ${this.name}`;
+            };
+
+            Person.prototype = new Person(); //to intact prototype chain
+            function Trainee(name, course) {
+                Person.call(this, name);
+                this.course = course;
+            }
+
+            Trainee.prototype.info = function () {
+                return `
+                Name:       ${this.name} <br />
+                Course:     ${this.course} <br />`;
+            };
+
+                Person.prototype = new Person(); //to intact prototype chain
+            function Pupil(name, course,dept) {
+                Person.call(this, name);
+                this.course = course;
+                this.dept = dept;
+            }
+
+            Pupil.prototype.info = function () {
+                return `
+                Name:    ${this.name} <br />
+                Course:  ${this.course}<br />
+                Department  ${this.dept}`;
+            };
+
+
+            var p1 = new Person("P1");
+            var p2 = new Trainee("P2", "C#");
+            var p3 = new Pupil("P3", "C#","Computer Science");
+
+            document.getElementById("d4").innerHTML += p1.info();
+            document.getElementById("d4").innerHTML += "<br />";
+            document.getElementById("d4").innerHTML += "<br />";
+            document.getElementById("d4").innerHTML += p2.info();
+            document.getElementById("d4").innerHTML += "<br />";
+            document.getElementById("d4").innerHTML += "<br />";
+            document.getElementById("d4").innerHTML += p3.info();
+
+          </script>
+    </body>
+</html>

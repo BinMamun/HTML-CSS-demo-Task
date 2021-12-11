@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Evidence OF 1264603</title>
+        <link rel="stylesheet" href="./style/style.css" />
+        <script src="./scripts/jquery/dist/jquery.js"></script>
+
+        <script>
+            $(() => {
+                $("#frm").submit(function (f) {
+                    f.preventDefault();
+
+                    if(!validate()) return;
+
+                    var data = new FormData(this);
+                    console.log(data);
+                    $.ajax({
+                        url: "/submit",
+                        type: "POST",
+                        data: data,
+
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                    })
+                        .done((result) => {
+                            var output = `<h2>Thanks for filling up the form</h2>
+
+                            <div> 
+                                <img  class = "pic" src='${result.p}'/>
+                            </div>
+                            <br/>
+                         <div>  
+                             Name:   ${result.n} 
+                            <br />
+                            <br />
+                            Destination:  ${result.c} 
+                            <br />
+                            <br />
+                            Flight Date:  ${result.d} 
+                            <br />
+                            <br />
+                            Departure Time:  ${result.t}
+                        </div>`;
+
+                            $("#mgs").html(output).show();
+                        })
+
+                        .fail((err) => {
+                            console.log(err);
+                        });
+                });
+            });
+
+
+            function validate(){
+                var valid = true;
+                var errmgs = "<h2>Please fill all fields</h2>";
+
+                if($('#name').val() == "") {
+                    valid = false;
+                    errmgs += "<div class=erm>Name is required<br /></div>";
+                }
+
+                if($('#city').val() == ""){
+                    valid = false;
+                   errmgs += "<div class=erm>City is required<br /></div>";
+                }
+
+                 if($('#dob').val() == ""){
+                    valid = false;
+                    errmgs += "<div class=erm>Flight date is required<br /></div>";
+                } else if (
+                    !$("#dob")
+                        .val()
+                        .match(/^\d{4}-([0-1]?[0-2]|[0-9])-\d{1,2}$/)
+                ) {
+                    valid = false;
+                    errmgs += "Invalid Date format.<br>";
+                }
+
+                    if($('#dot').val() == ""){
+                    valid = false;
+                    errmgs += "<div class=erm>Departure Time is required<br /></div>";
+                }else if (!$('#dot').val().match(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)){
+                    valid = false;
+                    errmgs += "<div class=erm>Time is invalid<br /></div>";
+
+                }
+               
+
+                  if($('#photo').val() == ""){
+                    valid = false;
+                    errmgs += "<div class=erm>Piture is required<br /></div>";
+                }else if (
+                    /\.(jpg|jpeg|png|gif)$/i.test($("#photo").val()) == false
+                ) {
+                    valid = false;
+                    errmgs += "Picture extension can be jpg/jpeg/png/gif<br>";
+                }
+
+
+                if(!valid){
+                    $('#error').html(errmgs).show();
+                } else $('#error').html("").hide();
+                return valid;
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="main">
+            <nav class="navbar">
+                <label><a class="brand" href="./index.html">Evidence</a></label>
+                <ul class="ul">
+                    <li class="list">
+                        <a class="li-font" href="./index.html">Home</a>
+                    </li>
+                     </li>
+                    <li class="list">
+                        <a class="li-font active" href="./task_01.html">Task_01</a>
+                    </li>
+                    <li class="list">
+                        <a class="li-font" href="./task_02.html">Task_02</a>
+                    </li>
+                    <li class="list">
+                        <a class="li-font" href="./about.html">About</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="container">
+                <h2>Please fillup the form below</h2>
+
+                <form
+                    class="frm"
+                    id="frm"
+                    method="POST"
+                    action="/submit"
+                    enctype="multipart/form-data"
+                    novalidate
+                >
+                    <div class="fld">
+                        <label class="label">Full Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="input"
+                            placeholder="Name"
+                            required
+                        />
+                    </div>
+
+                    <div class="fld">
+                        <label class="label">Destination</label>
+                        <select name="city" id="city" class="input" required>
+                            <option value="">Select city</option>
+                            <option value="Cape Town">Cape Town</option>
+                            <option value="Venice">Venice</option>
+                            <option value="Kyoto">Kyoto</option>
+                            <option value="Paris">Paris</option>
+                            <option value="Rome">Rome</option>
+                            <option value="Vancouver">Vancouver</option>
+                            <option value="Madrid">Madrid</option>
+                        </select>
+                    </div>
+
+                    <div class="fld">
+                        <label class="label">Flight Date</label>
+                        <input
+                            type="text"
+                            name="dob"
+                            id="dob"
+                            class="input cursor"
+                            placeholder="YYYY/MM/DD"
+                            required
+                        />
+                    </div>
+
+                     <div class="fld">
+                        <label class="label">Departure Time</label>
+                        <input
+                            type="text"
+                            name="dot"
+                            id="dot"
+                            class="input cursor"
+                            placeholder="HH:MM"
+                            required
+                        />
+                    </div>
+
+                    <div class="fld">
+                        <label class="label">Chose a Photo</label>
+                        <input
+                            type="file"
+                            name="photo"
+                            id="photo"
+                            class="inputfile"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <button type="submit" id="submit" class="btn">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id= "error" class="container" style="display: none;"></div>
+            <div id="mgs" class="container" style="display: none"></div>
+        </div>
+
+        <div>
+            <footer class="footer">&copy; -2021 Copyright info</footer>
+        </div>
+    </body>
+</html>
